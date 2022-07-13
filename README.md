@@ -1,18 +1,19 @@
-# Bayesian Data Analysis Book Chapter
+# Bayesian Data Analysis Book Code 3.4.2
 
-## 4.2. Bayesian Inference of Empirical GMMs
+## Bayesian Inference of Empirical GMMs
+- Within: Chapter 3 "Bayesian modeling in engineering seismology"
+	- Authors: Sahar Rahpeyma, Milad Kowsari, Tim Sonnemann, Benedikt Halldorsson, Birgir Hrafnkelsson
+- This documentation and Matlab code provided by Tim Sonnemann (tsonne@hi.is)
+- Last code update: 2020-12-09
 
-- This documentation and Matlab code by Tim Sonnemann (tsonne@hi.is)
-- last update: 2020-12-09
-
-### Requirements
+## Requirements
 - Matlab (at least version 2013b)
     - Global Optimization Toolbox
     - Optimization Toolbox
     - ParallelComputing Toolbox
 - LaTeX (optional to produce PDF reports)
 
-### Abbreviations and Terminology
+## Abbreviations and Terminology
 - PGA = peak ground acceleration
 - PSA = pseudo-spectral acceleration, calculated from ground acceleration for single-degree-of-freedom oscillator at various frequencies, maximum value is relevant data
 - RJB = Joyner-Boore distance, i.e. horizontal distance from receiver to earthquake source fault
@@ -25,17 +26,24 @@
 - MCMC = Markov chain Monte Carlo, sampling method
 - DRAM = Delayed-Rejection Adaptive Metropolis sampler
 
-### Structure
+## Structure
 - 4.2.1. Icelandic strong-motion data
     - data: (PGA,PSA)(RJB,MW,SITE,DEPTH)(Events,Stations)
 		- `Data_PSA_values.csv`
-			- PSA values at multiple periods (frequencies) for 83 station-event pairs
-			- data were used in Kowsari et al. 2020
+			- PSA values at multiple periods (frequencies) for 50 station-event pairs
 			- first row: periods
 			- all other rows: each one station-event PSA record
 		- `Explanatory.csv`
 			- explanatory variables for all station-event pairs
 			- columns: station code, eventID, MW, RJB, SITE, DEPTH
+		- About the data:
+			- from Icelandic Strong Motion Network
+			- records of 6 strike-slip earthquakes
+			- PSA component type is rotation invariant average
+				- described in Rupakhety and Sigbjörnsson (2013)
+			- reduced amounts of records, full dataset used in Bayesian inversion with multiple models and described in Kowsari et al. (2020)
+			- You can get the full dataset from ISESD (Ambraseys et al., 2002)
+				- http://www.isesd.hi.is
     - f: read dataset table
 		- `load_42_input.m`
     - f: plot dataset MW vs RJB
@@ -113,7 +121,7 @@
 		- located in `dat/(MODEL_NAME)/`
 		- data for each period zipped in archive file
 
-### How to run
+## How to run
 - Requires: Matlab, Parallel Computing Toolbox, Global Optimization Toolbox, Optimization Toolbox.
 - run `full_ch42` to load data, do inference, analyze, plot all
 - `GMM_BayesInf` does almost everything and ties the functions together, sets up LaTeX file, sorts out input configurations, does inference, plots and tables
@@ -121,8 +129,10 @@
 	- new subdirectories are created: `aux dat fig pdf tex`
 	- each model will have separate subdirectories in `dat` and files in the other directories
 	- LaTeX script will be generated and compilation to PDF file will be attempted (if failed, a warning text should come up)
+- default configuration: invert 2 models, 4 periods each (`config_Y2.m`)
+- runtime about 3 min using CPU: i7-6700HQ (8 cores)
 
-### Acknowledgments
+## Acknowledgments
 - Instruction in Bayesian statistics by Professor Birgir Hrafnkelsson
 	- Professor of Statistics, University of Iceland
 - Borrowed or modified code is listed here:
@@ -150,5 +160,10 @@
 - `kde2d` 2D kernel density estimator for 2D probability density plots
 	- Matlab Central ref.:
 	- Zdravko Botev (2015). kernel density estimation (https://www.mathworks.com/matlabcentral/fileexchange/17204-kernel-density-estimation), MATLAB Central File Exchange. Retrieved December 2, 2015. 
+
+## References
+- Rupakhety R, Sigbjörnsson R. Rotation-invariant measures of earthquake response spectra. Bull Earthq Eng 2013;11:1885–93.
 - Kowsari, M., Sonnemann, T., Halldorsson, B., Hrafnkelsson, B., Snæbjörnsson, J. Þ., and Jónsson, S. (2020). Bayesian inference of empirical ground motion models to pseudo-spectral accelerations of south Iceland seismic zone earthquakes based on informative priors. Soil Dynamics and Earthquake Engineering, 132, 106075.
+- Ambraseys, N., Smit, P., Sigbjornsson, R., Suhadolc, P. and Margaris, B. (2002), Internet-Site for European Strong-Motion Data, European Commission, Research-Directorate General, Environment and Climate Programme.
+
 
